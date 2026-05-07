@@ -5,6 +5,13 @@ const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require("bcryptjs");
 
+const validateInput = [
+    body("username").trim().escape()
+      .isLength({min: 1, max: 20}).withMessage('Username must be between 1 and 20 characters.'),
+    body("password").trim().escape()
+      .isLength({ min: 4}).withMessage('Password must be at least 4 characters.'),
+];
+
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
@@ -12,11 +19,11 @@ passport.use(
       const user = rows[0];
 
       if (!user) {
-        return done(null, false, { message: "Incorrect username" });
+        return done(null, false, { message: "Username not found" });
       }
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
-        return done(null, false, { message: "Incorrect password" })
+        return done(null, false, { message: "Incorrect username/password combination" })
         }
       return done(null, user);
     } catch(err) {
@@ -50,24 +57,42 @@ exports.signUpGet = (req, res) => {
     res.render("sign-up-form");
 };
 
-exports.signUpPost = async (req, res, next) => {
- try {
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
-  await db.newUser(req.body.username, hashedPassword);
-  res.redirect("/");
- } catch (error) {
-    console.error(error);
-    next(error);
-   }
-};
+exports.signUpPost = [
+  validateInput,
+  async (req, res, next) => {
+    const { username, password } = matchedData(req);
+    const errors = validationResult(req);
+    let errorMsgArray = [];
+    errors.array().forEach(error => {
+      errorMsgArray.push(error.msg);
+    });    
+    if(!errors.isEmpty()){
+        return res.status(400).render("sign-up-form", {
+          errors: errorMsgArray,
+        });
+    } else {
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      await db.newUser(username, hashedPassword);
+      res.redirect("/");
+    } catch (error) {
+        console.error(error);
+        next(error);
+      }
+    }
+  }
+] 
 
-exports.logInPost = (req, res, next) => {
+exports.logInPost = [
+  validateInput, 
+  (req, res, next) => {
     passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/",
-    failureMessage: true
-  })(req, res, next);
-}
+      successRedirect: "/",
+      failureRedirect: "/",
+      failureMessage: true
+    })(req, res, next);
+  }
+]
 
 exports.logOutPost = (req, res, next) => {
   req.logout((err) => {
