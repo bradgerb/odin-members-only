@@ -5,11 +5,16 @@ const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require("bcryptjs");
 
-const validateInput = [
-    body("username").trim().escape()
+const validateUser = [
+    body("username").trim().escape().toLowerCase()
       .isLength({min: 1, max: 20}).withMessage('Username must be between 1 and 20 characters.'),
     body("password").trim().escape()
       .isLength({ min: 4}).withMessage('Password must be at least 4 characters.'),
+];
+
+const validateMember = [
+    body("password").trim().escape()
+      .equals(`${process.env.memberPassword}`).withMessage('Incorrect member password'),
 ];
 
 passport.use(
@@ -58,7 +63,7 @@ exports.signUpGet = (req, res) => {
 };
 
 exports.signUpPost = [
-  validateInput,
+  validateUser,
   async (req, res, next) => {
     const { username, password } = matchedData(req);
     const errors = validationResult(req);
@@ -84,7 +89,7 @@ exports.signUpPost = [
 ] 
 
 exports.logInPost = [
-  validateInput, 
+  validateUser, 
   (req, res, next) => {
     passport.authenticate("local", {
       successRedirect: "/",
@@ -102,3 +107,27 @@ exports.logOutPost = (req, res, next) => {
     res.redirect("/");
   });
 };
+
+exports.memberGet = (req, res) => {
+    res.render("member-form");
+};
+
+exports.memberPost = [
+  validateMember, 
+  async (req, res, next) => {
+    const { memberPassword } = matchedData(req);
+    const errors = validationResult(req);
+    let errorMsgArray = [];
+    errors.array().forEach(error => {
+      errorMsgArray.push(error.msg);
+    });    
+    if(!errors.isEmpty()){
+        return res.status(400).render("member-form", {
+          errors: errorMsgArray,
+        });
+    } else {
+      await db.becomeMember(req.user.username);
+      res.redirect("/");
+    }
+  }
+] 

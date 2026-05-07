@@ -7,5 +7,7 @@ indexRouter.get("/sign-up", indexController.signUpGet);
 indexRouter.post("/sign-up", indexController.signUpPost);
 indexRouter.post("/log-in", indexController.logInPost);
 indexRouter.get("/log-out", indexController.logOutPost);
+indexRouter.get("/member", indexController.memberGet);
+indexRouter.post("/member", indexController.memberPost);
 
 module.exports = indexRouter;

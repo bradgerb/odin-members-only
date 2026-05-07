@@ -10,7 +10,9 @@ const SQL = `
 CREATE TABLE IF NOT EXISTS users (
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     username VARCHAR(255),
-    password VARCHAR(255)
+    password VARCHAR(255),
+    ismember BOOLEAN,
+    isadmin BOOLEAN
 );
 `
 

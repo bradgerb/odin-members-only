@@ -15,11 +15,19 @@ async function getUserByID(id) {
 }
 
 async function newUser(username, password) {
-    await pool.query("INSERT INTO users (username, password) VALUES ($1, $2)", [username, password]);
+    await pool.query("INSERT INTO users (username, password, ismember, isadmin) \
+      VALUES ($1, $2, false, false)", [username, password]);
+}
+
+async function becomeMember(username) {
+  await pool.query("UPDATE users \
+    SET ismember = true \
+    WHERE username = $1", [username]);
 }
 
 module.exports = {
   getUserByUsername,
   getUserByID,
   newUser,
+  becomeMember
 };
