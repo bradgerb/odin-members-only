@@ -52,6 +52,15 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
+const usernameCheck = async (username)=> {
+  let test = db.getUserByUsername(username.toLowerCase());
+  if (test){
+    return true
+  } else {
+    return false
+  }
+}
+
 exports.indexGet = (req, res) => {
     const messages = req.session.messages || [];
     req.session.messages = [];
@@ -68,10 +77,16 @@ exports.signUpPost = [
     const { username, password } = matchedData(req);
     const errors = validationResult(req);
     let errorMsgArray = [];
+
+    if(usernameCheck(username)){
+      errorMsgArray.push('Username already taken');
+    };
+   
     errors.array().forEach(error => {
       errorMsgArray.push(error.msg);
-    });    
-    if(!errors.isEmpty()){
+    });
+
+    if(errorMsgArray.length > 0){
         return res.status(400).render("sign-up-form", {
           title: 'Sign up',
           errors: errorMsgArray,
