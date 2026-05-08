@@ -8,11 +8,9 @@
 <body>
   <div class="bodyContainer">
     <%- include("partials/navbar.ejs") %>
-    <% if (locals.user) {%>
+    <% if (locals.user) { %>
       <div class="center">
         <h1>WELCOME BACK <%= user.username %></h1>
-        <% if (user.ismember){console.log('ismember')} %>
-        <a href="/log-out">LOG OUT</a>
       </div>
     <% } else { %>
       <div class="center">
