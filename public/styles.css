@@ -1,0 +1,47 @@
+*{
+    margin: 0;
+}
+
+.bodyContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-around; 
+    align-items: center;
+    background-color: #333;
+    padding: 1rem;
+}
+
+.navLinks > a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border: 1px solid white;
+    border-radius: 4px;
+}
+
+.navLinks {
+    display: flex;
+    gap: 10px;
+}
+
+li {
+    list-style-type: none;
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(200, 200, 200);
+}
+
+form > button {
+    width: 100%;
+}

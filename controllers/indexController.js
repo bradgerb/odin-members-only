@@ -1,6 +1,6 @@
 const db = require ('../db/queries');
 // const CustomNotFoundError = require("../errors/CustomNotFoundError");
-const { body, validationResult, matchedData, query } = require("express-validator");
+const { body, validationResult, matchedData } = require("express-validator");
 const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require("bcryptjs");
@@ -55,11 +55,11 @@ passport.deserializeUser(async (id, done) => {
 exports.indexGet = (req, res) => {
     const messages = req.session.messages || [];
     req.session.messages = [];
-    res.render("index", { user: req.user, errors: messages });
+    res.render("index", { title: 'Log in', user: req.user, errors: messages });
 };
 
 exports.signUpGet = (req, res) => {
-    res.render("sign-up-form");
+    res.render("sign-up-form", {title: 'Sign up'});
 };
 
 exports.signUpPost = [
@@ -73,6 +73,7 @@ exports.signUpPost = [
     });    
     if(!errors.isEmpty()){
         return res.status(400).render("sign-up-form", {
+          title: 'Sign up',
           errors: errorMsgArray,
         });
     } else {
@@ -109,13 +110,13 @@ exports.logOutPost = (req, res, next) => {
 };
 
 exports.memberGet = (req, res) => {
-    res.render("member-form");
+    res.render("member-form", {title: 'Become a member'});
 };
 
 exports.memberPost = [
   validateMember, 
   async (req, res, next) => {
-    const { memberPassword } = matchedData(req);
+    // const { memberPassword } = matchedData(req);
     const errors = validationResult(req);
     let errorMsgArray = [];
     errors.array().forEach(error => {
@@ -123,6 +124,7 @@ exports.memberPost = [
     });    
     if(!errors.isEmpty()){
         return res.status(400).render("member-form", {
+          title: 'Become a member',
           errors: errorMsgArray,
         });
     } else {
