@@ -17,6 +17,11 @@ const validateMember = [
       .equals(`${process.env.memberPassword}`).withMessage('Incorrect member password'),
 ];
 
+const validateAdmin = [
+    body("password").trim().escape()
+      .equals(`${process.env.adminPassword}`).withMessage('Incorrect admin password'),
+];
+
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
@@ -131,7 +136,6 @@ exports.memberGet = (req, res) => {
 exports.memberPost = [
   validateMember, 
   async (req, res, next) => {
-    // const { memberPassword } = matchedData(req);
     const errors = validationResult(req);
     let errorMsgArray = [];
     errors.array().forEach(error => {
@@ -147,4 +151,28 @@ exports.memberPost = [
       res.redirect("/");
     }
   }
-] 
+]
+
+exports.adminGet = (req, res) => {
+    res.render("admin-form", {title: 'Become an admin'});
+};
+
+exports.adminPost = [
+  validateAdmin, 
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    let errorMsgArray = [];
+    errors.array().forEach(error => {
+      errorMsgArray.push(error.msg);
+    });    
+    if(!errors.isEmpty()){
+        return res.status(400).render("admin-form", {
+          title: 'Become an admin',
+          errors: errorMsgArray,
+        });
+    } else {
+      await db.becomeAdmin(req.user.username);
+      res.redirect("/");
+    }
+  }
+]

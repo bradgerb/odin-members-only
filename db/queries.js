@@ -25,9 +25,16 @@ async function becomeMember(username) {
     WHERE username = $1", [username]);
 }
 
+async function becomeAdmin(username) {
+  await pool.query("UPDATE users \
+    SET isadmin = true \
+    WHERE username = $1", [username]);
+}
+
 module.exports = {
   getUserByUsername,
   getUserByID,
   newUser,
-  becomeMember
+  becomeMember,
+  becomeAdmin
 };

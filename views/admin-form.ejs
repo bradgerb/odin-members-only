@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="bodyContainer">
+    <%- include("partials/navbar.ejs") %>
+    <div class="center">
+      <h1>Enter admin password</h1><br>
+      <%- include("partials/errors.ejs") %>
+      <form action="/admin" method="POST">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" /><br><br>
+        <button type="submit">Become an admin</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
