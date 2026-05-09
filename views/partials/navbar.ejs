@@ -13,9 +13,6 @@
         <% if (locals.user) { %>
             <a href='/'>Home</a>
             <a href="/log-out">Log out</a>
-        <% } %>
-
-        <% if (locals.user && locals.user.ismember) { %>
             <a href="/createPost">Post</a>
         <% } %>
 

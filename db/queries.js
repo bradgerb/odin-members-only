@@ -15,20 +15,26 @@ async function getUserByID(id) {
 }
 
 async function newUser(username, password) {
-    await pool.query("INSERT INTO users (username, password, ismember, isadmin) \
-      VALUES ($1, $2, false, false)", [username, password]);
+  await pool.query(
+    "INSERT INTO users (username, password, ismember, isadmin) \
+    VALUES ($1, $2, false, false)", [username, password]
+  );
 }
 
 async function becomeMember(username) {
-  await pool.query("UPDATE users \
+  await pool.query(
+    "UPDATE users \
     SET ismember = true \
-    WHERE username = $1", [username]);
+    WHERE username = $1", [username]
+  );
 }
 
 async function becomeAdmin(username) {
-  await pool.query("UPDATE users \
+  await pool.query(
+    "UPDATE users \
     SET isadmin = true \
-    WHERE username = $1", [username]);
+    WHERE username = $1", [username]
+  );
 }
 
 async function getMessages() {
@@ -40,11 +46,19 @@ async function getMessages() {
   return rows
 }
 
+async function postMessage(message, user_id) {
+  await pool.query(
+    "INSERT INTO messages (message, user_id) \
+    VALUES ($1, $2)", [message, user_id]
+  );
+}
+
 module.exports = {
   getUserByUsername,
   getUserByID,
   newUser,
   becomeMember,
   becomeAdmin,
-  getMessages
+  getMessages,
+  postMessage
 };

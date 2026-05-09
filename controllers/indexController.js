@@ -28,6 +28,11 @@ const validateAdmin = [
       .equals(`${process.env.adminPassword}`).withMessage('Incorrect admin password'),
 ];
 
+const validatePost = [
+    body("message").trim().escape()
+      .isLength({min: 1, max: 255}).withMessage('Message must be between 1 and 255 characters'),
+];
+
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
@@ -185,6 +190,31 @@ exports.adminPost = [
         });
     } else {
       await db.becomeAdmin(req.user.username);
+      res.redirect("/");
+    }
+  }
+]
+
+exports.createPostGet = (req, res) => {
+    res.render("createPost", {title: 'Make a post'});
+};
+
+exports.createPostPost = [
+  validatePost, 
+  async (req, res, next) => {
+    const { message } = matchedData(req);
+    const errors = validationResult(req);
+    let errorMsgArray = [];
+    errors.array().forEach(error => {
+      errorMsgArray.push(error.msg);
+    });
+    if(!errors.isEmpty()){
+        return res.status(400).render("createPost", {
+          title: 'Make a post',
+          errors: errorMsgArray,
+        });
+    } else {
+      await db.postMessage(message, req.user.user_id);
       res.redirect("/");
     }
   }
