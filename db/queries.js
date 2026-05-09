@@ -9,7 +9,7 @@ async function getUserByUsername(username) {
 
 async function getUserByID(id) {
   const { rows } = await pool.query(
-    "SELECT * FROM users WHERE id = $1", [id]
+    "SELECT * FROM users WHERE user_id = $1", [id]
   );
   return rows
 }
