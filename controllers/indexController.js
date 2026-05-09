@@ -66,10 +66,16 @@ const usernameCheck = async (username)=> {
   }
 }
 
-exports.indexGet = (req, res) => {
-    const messages = req.session.messages || [];
+exports.indexGet = async (req, res) => {
+    const errors = req.session.messages || [];
+    const messages = await db.getMessages();
     req.session.messages = [];
-    res.render("index", { title: 'Log in', user: req.user, errors: messages });
+    res.render("index", { 
+      title: 'Log in',
+      user: req.user,
+      errors: errors,
+      messages: messages,
+     });
 };
 
 exports.signUpGet = (req, res) => {

@@ -8,6 +8,7 @@
 <body>
   <div class="bodyContainer">
     <%- include("partials/navbar.ejs") %>
+    <% if (locals.user && locals.user.ismember) { %>
     <div class="center">
       <h1>Enter admin password</h1><br>
       <%- include("partials/errors.ejs") %>
@@ -17,6 +18,15 @@
         <button type="submit">Become an admin</button>
       </form>
     </div>
+    <% } else if (locals.user){ %>
+      <div class="center">
+        <h1>You are not a member</h1>
+      </div>
+    <% } else { %>
+      <div class="center">
+        <h1>You are not logged in</h1>
+      </div>        
+    <% } %>
   </div>
 </body>
 </html>

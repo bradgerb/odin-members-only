@@ -10,7 +10,21 @@
     <%- include("partials/navbar.ejs") %>
     <% if (locals.user) { %>
       <div class="center">
-        <h1>WELCOME BACK <%= user.username %></h1>
+        <div class="cardContainer">
+          <% messages.forEach((message) => { %>
+            <div class="card">
+              <span class="content"><%= message.message %></span>
+              <hr>
+              <% if (locals.user.ismember) { %>
+                <span>Posted by: <%= message.username %></span>
+                <span>Posted at: <%= message.date %></span>
+              <% } else { %>
+                <span class="blur">Posted by: <%= message.username %></span>
+                <span class="blur">Posted at: <%= message.date %></span>
+              <%}%>
+            </div>
+          <% }); %>
+        </div>
       </div>
     <% } else { %>
       <div class="center">

@@ -31,10 +31,20 @@ async function becomeAdmin(username) {
     WHERE username = $1", [username]);
 }
 
+async function getMessages() {
+  const { rows } = await pool.query(
+    "SELECT message, username, trim(TO_CHAR(date, 'FMDay, DD Mon YYYY HH12:MI AM')) AS date FROM messages \
+    JOIN users ON users.user_id = messages.user_id \
+    ORDER BY message_id"
+  );
+  return rows
+}
+
 module.exports = {
   getUserByUsername,
   getUserByID,
   newUser,
   becomeMember,
-  becomeAdmin
+  becomeAdmin,
+  getMessages
 };

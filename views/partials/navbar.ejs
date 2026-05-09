@@ -15,6 +15,10 @@
             <a href="/log-out">Log out</a>
         <% } %>
 
+        <% if (locals.user && locals.user.ismember) { %>
+            <a href="/createPost">Post</a>
+        <% } %>
+
         <% if (locals.user && !locals.user.ismember) { %>
             <a href="/member">Become a member</a>
         <% } %>

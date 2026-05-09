@@ -22,6 +22,12 @@ CREATE TABLE IF NOT EXISTS messages (
     user_id INT,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
+
+INSERT INTO users (username, password) VALUES
+('guest', 'test');
+
+INSERT INTO messages (message, user_id) VALUES
+('Hello world', 1);
 `
 
 async function main() {
