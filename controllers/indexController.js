@@ -58,8 +58,8 @@ passport.deserializeUser(async (id, done) => {
 });
 
 const usernameCheck = async (username)=> {
-  let test = db.getUserByUsername(username.toLowerCase());
-  if (test){
+  const test = await db.getUserByUsername(username.toLowerCase());
+  if (test.length > 0){
     return true
   } else {
     return false
@@ -81,12 +81,13 @@ exports.signUpPost = [
   async (req, res, next) => {
     const { username, password } = matchedData(req);
     const errors = validationResult(req);
+    const usernameExists = await usernameCheck(username);
     let errorMsgArray = [];
 
-    if(usernameCheck(username)){
+    if(usernameExists){
       errorMsgArray.push('Username already taken');
     };
-   
+  
     errors.array().forEach(error => {
       errorMsgArray.push(error.msg);
     });
@@ -130,7 +131,7 @@ exports.logOutPost = (req, res, next) => {
 };
 
 exports.memberGet = (req, res) => {
-    res.render("member-form", {title: 'Become a member'});
+    res.render("member-form", {title: 'Become a member'}); 
 };
 
 exports.memberPost = [
@@ -140,7 +141,7 @@ exports.memberPost = [
     let errorMsgArray = [];
     errors.array().forEach(error => {
       errorMsgArray.push(error.msg);
-    });    
+    });
     if(!errors.isEmpty()){
         return res.status(400).render("member-form", {
           title: 'Become a member',
