@@ -95,3 +95,18 @@ form > button {
 .blur {
     filter: blur(5px);
 }
+
+.banUser {
+    height: .875rem;
+}
+
+.deleteMessage {
+    display: flex;
+    justify-content: right;
+    height: 1rem;
+}
+
+.flexCenter {
+    display: flex;
+    align-items: center;
+}

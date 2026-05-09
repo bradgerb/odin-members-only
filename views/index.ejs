@@ -13,10 +13,22 @@
         <div class="cardContainer">
           <% messages.forEach((message) => { %>
             <div class="card">
-              <span class="content"><%= message.message %></span>
+              <span class="content">
+                  <%= message.message %>
+                  <span class="deleteMessage">
+                    <% if (locals.user.isadmin) { %>
+                        <img src="/trash-can.svg" alt="Delete message">
+                    <% } %>
+                  </span>  
+              </span>
               <hr>
               <% if (locals.user.ismember) { %>
-                <span>Posted by: <%= message.username %></span>
+                <span class="flexCenter">
+                  Posted by: <%= message.username %> &nbsp;
+                  <% if (locals.user.isadmin) { %>
+                    <img src="/skull.svg" alt="Ban user" class="banUser">
+                  <% } %>
+                </span>
                 <span>Posted at: <%= message.date %></span>
               <% } else { %>
                 <span class="blur">Posted by: <%= message.username %></span>
