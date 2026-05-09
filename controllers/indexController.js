@@ -10,6 +10,12 @@ const validateUser = [
       .isLength({min: 1, max: 20}).withMessage('Username must be between 1 and 20 characters.'),
     body("password").trim().escape()
       .isLength({ min: 4}).withMessage('Password must be at least 4 characters.'),
+    body('confirmPassword').custom((value, { req }) => {
+      if (value !== req.body.password) {
+        throw new Error('Password confirmation does not match password');
+      }
+      return true;
+    })
 ];
 
 const validateMember = [
