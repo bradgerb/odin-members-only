@@ -13,5 +13,7 @@ indexRouter.get("/admin", indexController.adminGet);
 indexRouter.post("/admin", indexController.adminPost);
 indexRouter.get("/createPost", indexController.createPostGet);
 indexRouter.post("/createPost", indexController.createPostPost);
+indexRouter.post("/banUser", indexController.banUserPost);
+indexRouter.post("/deleteMessage", indexController.deleteMessagePost);
 
 module.exports = indexRouter;

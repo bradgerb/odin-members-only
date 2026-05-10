@@ -53,6 +53,20 @@ async function postMessage(message, user_id) {
   );
 }
 
+async function deleteUser(user_id) {
+    await pool.query(
+    "DELETE FROM users \
+    WHERE user_id = $1", [user_id]
+  );
+}
+
+async function deleteMessage(message_id) {
+    await pool.query(
+    "DELETE FROM messages \
+    WHERE message_id = $1", [message_id]
+  );
+}
+
 module.exports = {
   getUserByUsername,
   getUserByID,
@@ -60,5 +74,7 @@ module.exports = {
   becomeMember,
   becomeAdmin,
   getMessages,
-  postMessage
+  postMessage,
+  deleteUser,
+  deleteMessage
 };

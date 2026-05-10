@@ -17,7 +17,9 @@
                   <%= message.message %>
                   <span class="deleteMessage">
                     <% if (locals.user.isadmin) { %>
-                        <img src="/trash-can.svg" alt="Delete message" onclick="logMsgID(this.id)" id=<%= message.message_id %>> 
+                      <form action="/deleteMessage" method="POST">
+                        <button type="submit" name="message_id" value="<%= message.message_id %>" class="deleteMessageBtn"></button>
+                      </form>
                     <% } %>
                   </span>  
               </span>
@@ -26,7 +28,9 @@
                 <span class="flexCenter">
                   Posted by: <%= message.username %> &nbsp;
                   <% if (locals.user.isadmin) { %>
-                    <img src="/skull.svg" alt="Ban user" class="banUser" onclick="logUserID(this.dataset.value)" data-value=<%= message.user_id %>>
+                    <form action="/banUser" method="POST">
+                      <button type="submit" name="user_id" value="<%= message.user_id %>" class="banUser"></button>
+                    </form>
                   <% } %>
                 </span>
                 <span>Posted at: <%= message.date %></span>
@@ -53,15 +57,3 @@
     <%}%>
   </div>
 </body>
-
-<script>
-  async function logMsgID(id) {
-    console.log(id);
-  }
-
-  async function logUserID(id) {
-    console.log(id);
-  }
-</script>
-
-</html>

@@ -219,3 +219,13 @@ exports.createPostPost = [
     }
   }
 ]
+
+exports.banUserPost = async (req, res) => {
+  await db.deleteUser(req.body.user_id);
+  res.redirect("/");
+}
+
+exports.deleteMessagePost = async (req, res) => {
+  await db.deleteMessage(req.body.message_id);
+  res.redirect("/");
+}

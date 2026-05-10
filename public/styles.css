@@ -98,12 +98,25 @@ form > button {
 
 .banUser {
     height: .875rem;
+    width: .875rem;
+    background-image: url('/skull.svg');
 }
 
 .deleteMessage {
     float: right;
+}
+
+.deleteMessageBtn {
     width: 1rem;
     height: 1rem;
+    background-image: url('/trash-can.svg');
+}
+
+.banUser, .deleteMessageBtn {
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
+    background-color: transparent;
 }
 
 .banUser:hover, .deleteMessage:hover {
